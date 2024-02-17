@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:smartpay/src/components/splash_screen.dart';
+import 'package:smartpay/src/utils/routes.dart';
+import 'package:smartpay/src/utils/theme_config.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -12,11 +16,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Smartpay',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const Text('Flutter Demo Home Page'),
+      theme: ThemeConfig.lightTheme,
+      debugShowCheckedModeBanner: false,
+      initialRoute: SplashScreen.routeName,
+      onGenerateRoute: AppRouter.generateRoute,
     );
   }
 }
