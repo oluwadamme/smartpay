@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smartpay/src/components/custom_button.dart';
+import 'package:smartpay/src/features/auth/views/login_screen.dart';
 import 'package:smartpay/src/features/onboarding/widgets/onboard_one.dart';
 import 'package:smartpay/src/features/onboarding/widgets/onboard_two.dart';
 import 'package:smartpay/src/features/onboarding/widgets/onboarding_text.dart';
@@ -92,7 +93,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               CustomButton(
                                 text: "Get Started",
                                 function: () {
-                                  Navigator.pushNamed(context, OnboardingScreen.routeName);
+                                  Navigator.pushNamed(context, LoginScreen.routeName);
                                 },
                               )
                             ],

@@ -9,10 +9,12 @@ class CustomButton extends StatelessWidget {
     required this.text,
     required this.function,
     this.width,
+    this.loading = false,
   });
   final String text;
   final VoidCallback function;
   final double? width;
+  final bool loading;
   @override
   Widget build(BuildContext context) {
     return TextButton(
@@ -24,10 +26,12 @@ class CustomButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
         ),
       ),
-      child: Text(
-        text,
-        style: boldStyle(15, Colors.white),
-      ),
+      child: loading
+          ? const SizedBox(width: 25, height: 25, child: CircularProgressIndicator())
+          : Text(
+              text,
+              style: boldStyle(15, Colors.white),
+            ),
     );
   }
 }
