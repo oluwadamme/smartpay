@@ -28,7 +28,10 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         initialRoute: SplashScreen.routeName,
         onGenerateRoute: AppRouter.generateRoute,
+        navigatorKey: navigatorKey,
       ),
     );
   }
 }
+
+GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
