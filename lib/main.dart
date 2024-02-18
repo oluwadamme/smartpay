@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartpay/src/components/splash_screen.dart';
 import 'package:smartpay/src/features/auth/data/controller/auth_controller.dart';
+import 'package:smartpay/src/features/auth/data/controller/dash_controller.dart';
 import 'package:smartpay/src/utils/routes.dart';
 import 'package:smartpay/src/utils/service_locator.dart';
 import 'package:smartpay/src/utils/theme_config.dart';
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => AuthProvider()),
+        BlocProvider(create: (context) => DashboardProvider()),
       ],
       child: MaterialApp(
         title: 'Smartpay',

@@ -3,6 +3,7 @@ import 'package:smartpay/src/components/animations.dart';
 import 'package:smartpay/src/components/splash_screen.dart';
 import 'package:smartpay/src/features/auth/views/about_you_screen.dart';
 import 'package:smartpay/src/features/auth/views/complete_registration.dart';
+import 'package:smartpay/src/features/auth/views/home_screen.dart';
 import 'package:smartpay/src/features/auth/views/login_screen.dart';
 import 'package:smartpay/src/features/auth/views/register_screen.dart';
 import 'package:smartpay/src/features/auth/views/verify_email_screen.dart';
@@ -23,6 +24,8 @@ class AppRouter {
         return ScaleRoute(page: const AboutYouScreen());
       case CompleteReg.routeName:
         return ScaleRoute(page: const CompleteReg());
+      case HomeScreen.routeName:
+        return ScaleRoute(page: const HomeScreen());
       case LoginScreen.routeName:
         return SlideRightRoute(page: const LoginScreen());
       default:

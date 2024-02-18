@@ -9,7 +9,7 @@ class AuthProvider extends Cubit<AuthState> {
   AuthProvider() : super(AuthState(data: null));
 
   final regRequest = RegisterRequest();
-
+  LoginResponse? loginResponse;
   Future<void> login(String email, String password) async {
     emit(AuthState(data: null, loading: true));
     try {
@@ -17,6 +17,7 @@ class AuthProvider extends Cubit<AuthState> {
       if (resp.hasError()) {
         emit(AuthState(loading: false, error: resp.error!.message));
       } else {
+        loginResponse = resp.response as LoginResponse;
         emit(AuthState(data: resp.response as LoginResponse, loading: false));
       }
     } catch (e) {

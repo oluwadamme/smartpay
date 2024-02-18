@@ -20,7 +20,7 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: disabled ? null : function,
+      onPressed: disabled || loading ? null : function,
       style: TextButton.styleFrom(
         backgroundColor: AppColors.grey900.withOpacity(disabled ? 0.7 : 1),
         fixedSize: Size(width ?? screenWidth(context), 56),

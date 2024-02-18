@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:smartpay/src/core/api_client.dart';
@@ -51,6 +52,21 @@ class AuthRepository {
     try {
       final response = await client
           .post(Endpoints.verifyEmailToken, data: {"email": email, "token": token}).then((value) => value['message']);
+
+      return RequestRes(response: response);
+    } catch (e) {
+      return RequestRes(error: ErrorRes(message: e.toString()));
+    }
+  }
+
+  Future<RequestRes> dashboard(String token) async {
+    final client = locator.get<ApiClient>();
+    try {
+      final response = await client.get(Endpoints.home, headers: {
+        'Content-type': 'application/json',
+        "Accept": "application/json",
+        'Authorization': 'Bearer $token',
+      }).then((value) => value['data']['secret']);
 
       return RequestRes(response: response);
     } catch (e) {

@@ -15,4 +15,6 @@ class AppAsset {
   static const String google = "assets/svgs/google.svg";
   static const String or = "assets/svgs/or.svg";
   static const String search = "assets/svgs/search.svg";
+
+  static const String thumb = "assets/images/Group 162902.png";
 }

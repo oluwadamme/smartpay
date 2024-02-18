@@ -7,6 +7,7 @@ import 'package:smartpay/src/components/custom_button.dart';
 import 'package:smartpay/src/components/input_field.dart';
 import 'package:smartpay/src/features/auth/data/controller/auth_controller.dart';
 import 'package:smartpay/src/features/auth/data/controller/auth_state.dart';
+import 'package:smartpay/src/features/auth/views/home_screen.dart';
 import 'package:smartpay/src/features/auth/views/register_screen.dart';
 import 'package:smartpay/src/features/auth/views/widgets/other_auth_method.dart';
 import 'package:smartpay/src/utils/app_asset.dart';
@@ -40,11 +41,13 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leadingWidth: 8,
-        leading: const SizedBox.shrink(),
-        title: const CustomBackButton(),
-      ),
+      appBar: Navigator.canPop(context)
+          ? AppBar(
+              leadingWidth: 8,
+              leading: const SizedBox.shrink(),
+              title: const CustomBackButton(),
+            )
+          : null,
       resizeToAvoidBottomInset: false,
       body: BlocConsumer<AuthProvider, AuthState>(listener: (context, state) {
         if (state.error != null) {
@@ -52,6 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
           return;
         }
         if (state.data != null) {
+          Navigator.pushNamed(context, HomeScreen.routeName);
           return;
         }
       }, builder: (context, state) {
@@ -126,10 +130,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   text: "Sign In",
                   function: () {
                     FocusScope.of(context).unfocus();
-                    if (formKey.currentState!.validate()) {
-                      login();
-                    }
+                    login();
                   },
+                  disabled: formKey.currentState != null && !formKey.currentState!.validate(),
                   loading: state.loading,
                 ),
                 const YMargin(40),
