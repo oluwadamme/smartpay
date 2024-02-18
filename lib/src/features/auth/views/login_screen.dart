@@ -8,6 +8,7 @@ import 'package:smartpay/src/components/input_field.dart';
 import 'package:smartpay/src/features/auth/data/controller/auth_controller.dart';
 import 'package:smartpay/src/features/auth/data/controller/auth_state.dart';
 import 'package:smartpay/src/features/auth/views/register_screen.dart';
+import 'package:smartpay/src/features/auth/views/widgets/other_auth_method.dart';
 import 'package:smartpay/src/utils/app_asset.dart';
 import 'package:smartpay/src/utils/app_color.dart';
 import 'package:smartpay/src/utils/extensions.dart';
@@ -132,35 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   loading: state.loading,
                 ),
                 const YMargin(40),
-                SvgPicture.asset(AppAsset.or),
-                const YMargin(30),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        width: screenWidth(context),
-                        height: 56,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: AppColors.grey200),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Center(child: SvgPicture.asset(AppAsset.google)),
-                      ),
-                    ),
-                    const XMargin(20),
-                    Expanded(
-                      child: Container(
-                        width: screenWidth(context),
-                        height: 56,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: AppColors.grey200),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Center(child: SvgPicture.asset(AppAsset.apple)),
-                      ),
-                    ),
-                  ],
-                ),
+                const OtherAuthMethod(),
                 const Spacer(),
                 Center(
                   child: Text.rich(

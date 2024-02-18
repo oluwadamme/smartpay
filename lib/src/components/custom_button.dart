@@ -10,17 +10,19 @@ class CustomButton extends StatelessWidget {
     required this.function,
     this.width,
     this.loading = false,
+    this.disabled = false,
   });
   final String text;
   final VoidCallback function;
   final double? width;
   final bool loading;
+  final bool disabled;
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: function,
+      onPressed: disabled ? null : function,
       style: TextButton.styleFrom(
-        backgroundColor: AppColors.grey900,
+        backgroundColor: AppColors.grey900.withOpacity(disabled ? 0.7 : 1),
         fixedSize: Size(width ?? screenWidth(context), 56),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),

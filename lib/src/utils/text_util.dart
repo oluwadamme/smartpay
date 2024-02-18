@@ -66,7 +66,7 @@ TextStyle mediumStyle(
     color: color,
     fontWeight: FontWeight.w500,
     letterSpacing: letterSpacing,
-    height: 1.2,
+    height: 1.4,
     decoration: decoration,
     fontFamily: family ?? "SF-Pro",
   );
@@ -84,7 +84,7 @@ TextStyle normalStyle(
     color: color,
     fontWeight: FontWeight.w400,
     letterSpacing: letterSpacing,
-    height: 1.3,
+    height: 1.4,
     decoration: decoration,
     fontFamily: family ?? "SF-Pro",
   );

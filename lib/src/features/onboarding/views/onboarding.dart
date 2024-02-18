@@ -35,7 +35,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(context, LoginScreen.routeName);
+                          },
                           child: Text(
                             "Skip",
                             style: boldStyle(16, AppColors.primary400),

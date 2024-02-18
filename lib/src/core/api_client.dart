@@ -115,7 +115,8 @@ class ApiClient {
     if (response.data.runtimeType == String) {
       return "Cannot process your request. Try again";
     }
-    return response.data["message"] ??
+    return response.data["errors"] ??
+        response.data["message"] ??
         response.data["error_description"] ??
         response.data["error"] ??
         response.data["status"] ??

@@ -13,6 +13,6 @@ class AppAsset {
   static const String back = "assets/svgs/chevron-left.svg";
   static const String apple = "assets/svgs/path4.svg";
   static const String google = "assets/svgs/google.svg";
-
   static const String or = "assets/svgs/or.svg";
+  static const String search = "assets/svgs/search.svg";
 }

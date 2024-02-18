@@ -9,12 +9,12 @@ RegisterRequest registerRequestFromJson(String str) => RegisterRequest.fromJson(
 String registerRequestToJson(RegisterRequest data) => json.encode(data.toJson());
 
 class RegisterRequest {
-  final String? fullName;
-  final String? username;
-  final String? email;
-  final String? password;
-  final String? country;
-  final String? deviceName;
+  String? fullName;
+  String? username;
+  String? email;
+  String? password;
+  String? country;
+  String? deviceName;
 
   RegisterRequest({
     this.fullName,
