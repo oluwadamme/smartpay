@@ -101,7 +101,7 @@ class ScaleRoute extends PageRouteBuilder {
             ).animate(
               CurvedAnimation(
                 parent: animation,
-                curve: Curves.fastOutSlowIn,
+                curve: Curves.easeInOut,
               ),
             ),
             child: child,
@@ -167,25 +167,31 @@ class SizeRoute extends PageRouteBuilder {
 }
 
 class FadeRoute extends PageRouteBuilder {
-  final Widget? page;
-  FadeRoute({this.page})
+  final Widget page;
+  FadeRoute({required this.page})
       : super(
           pageBuilder: (
             BuildContext context,
             Animation<double> animation,
             Animation<double> secondaryAnimation,
           ) =>
-              page!,
+              page,
           transitionsBuilder: (
             BuildContext context,
             Animation<double> animation,
             Animation<double> secondaryAnimation,
             Widget child,
-          ) =>
-              FadeTransition(
-            opacity: animation,
-            child: child,
-          ),
+          ) {
+            const begin = 0.0;
+            const end = 1.0;
+            var tween = Tween(begin: begin, end: end);
+            var opacityAnimation = tween.animate(animation);
+
+            return FadeTransition(
+              opacity: opacityAnimation,
+              child: child,
+            );
+          },
         );
 }
 

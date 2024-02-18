@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:smartpay/src/components/animations.dart';
-import 'package:smartpay/src/components/custom_page_route.dart';
 import 'package:smartpay/src/components/splash_screen.dart';
 import 'package:smartpay/src/features/onboarding/views/onboarding.dart';
 
@@ -10,9 +9,9 @@ class AppRouter {
       case SplashScreen.routeName:
         return FadeRoute(page: const SplashScreen());
       case OnboardingScreen.routeName:
-        return CustomPageRouteBuilder(child: const OnboardingScreen());
+        return ScaleRoute(page: const OnboardingScreen());
       default:
-        return MaterialPageRoute(builder: (context) => const SplashScreen());
+        return FadeRoute(page: const SplashScreen());
     }
   }
 }
