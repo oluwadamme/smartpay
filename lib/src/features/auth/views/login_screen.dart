@@ -1,7 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:smartpay/src/components/custom_back_button.dart';
 import 'package:smartpay/src/components/custom_button.dart';
 import 'package:smartpay/src/components/input_field.dart';
@@ -10,7 +9,6 @@ import 'package:smartpay/src/features/auth/data/controller/auth_state.dart';
 import 'package:smartpay/src/features/auth/views/home_screen.dart';
 import 'package:smartpay/src/features/auth/views/register_screen.dart';
 import 'package:smartpay/src/features/auth/views/widgets/other_auth_method.dart';
-import 'package:smartpay/src/utils/app_asset.dart';
 import 'package:smartpay/src/utils/app_color.dart';
 import 'package:smartpay/src/utils/extensions.dart';
 import 'package:smartpay/src/utils/spacing_util.dart';
