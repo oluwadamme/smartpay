@@ -115,14 +115,23 @@ class ApiClient {
     if (response.data.runtimeType == String) {
       return "Cannot process your request. Try again";
     }
-    return response.data["errors"] ??
-        response.data["message"] ??
-        response.data["error_description"] ??
-        response.data["error"] ??
-        response.data["status"] ??
-        "Server error. Please contact support for help.";
+    if (response.data["errors"].runtimeType == List && (response.data["errors"] as List).isNotEmpty) {
+      return response.data["errors"];
+    }
+    try {
+      if ((response.data["errors"] as Map).isNotEmpty) {
+        return response.data["errors"];
+      }
+    } catch (e) {
+      return response.data["message"] ??
+          response.data["error_description"] ??
+          response.data["error"] ??
+          response.data["status"] ??
+          "Server error. Please contact support for help.";
+    }
   }
 
+//dammy@gmail.com 44907
   Dio _getDio() {
     final dio = Dio(
       BaseOptions(

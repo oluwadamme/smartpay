@@ -11,6 +11,7 @@ class ThemeConfig {
       size: 20,
       color: AppColors.grey500,
     ),
+    appBarTheme: const AppBarTheme(backgroundColor: Colors.white),
     fontFamily: "SF-Pro",
     inputDecorationTheme: InputDecorationTheme(
       enabledBorder: OutlineInputBorder(

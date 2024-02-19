@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,6 +32,14 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
   void verifyToken() async {
     final bloc = BlocProvider.of<AuthProvider>(context);
     await bloc.validateToken(bloc.regRequest.email!, pin);
+    if (bloc.state.error != null) {
+      ToastUtil.showErrorToast(context, bloc.state.error ?? "Error");
+      return;
+    }
+    if (bloc.state.data != null) {
+      Navigator.pushNamed(context, AboutYouScreen.routeName);
+      return;
+    }
   }
 
   final controller = TextEditingController();
@@ -44,16 +54,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
         title: const CustomBackButton(),
       ),
       resizeToAvoidBottomInset: false,
-      body: BlocConsumer<AuthProvider, AuthState>(listener: (context, state) {
-        if (state.error != null) {
-          ToastUtil.showErrorToast(context, state.error ?? "Error");
-          return;
-        }
-        if (state.data != null) {
-          Navigator.pushNamed(context, AboutYouScreen.routeName);
-          return;
-        }
-      }, builder: (context, state) {
+      body: BlocBuilder<AuthProvider, AuthState>(builder: (context, state) {
         return Padding(
           padding: const EdgeInsets.all(20),
           child: Column(

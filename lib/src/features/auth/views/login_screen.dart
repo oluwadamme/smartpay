@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +8,7 @@ import 'package:smartpay/src/components/custom_button.dart';
 import 'package:smartpay/src/components/input_field.dart';
 import 'package:smartpay/src/features/auth/data/controller/auth_controller.dart';
 import 'package:smartpay/src/features/auth/data/controller/auth_state.dart';
+import 'package:smartpay/src/features/auth/data/model/login_response.dart';
 import 'package:smartpay/src/features/auth/views/home_screen.dart';
 import 'package:smartpay/src/features/auth/views/register_screen.dart';
 import 'package:smartpay/src/features/auth/views/widgets/other_auth_method.dart';
@@ -34,6 +37,20 @@ class _LoginScreenState extends State<LoginScreen> {
       emailController.text.trim(),
       passController.text.trim(),
     );
+    if (bloc.state.error != null) {
+      ToastUtil.showErrorToast(context, bloc.state.error ?? "Error");
+      return;
+    }
+    if (bloc.state.data != null && bloc.state.data is LoginResponse) {
+      Navigator.pushNamed(context, HomeScreen.routeName);
+      return;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {});
   }
 
   @override
@@ -47,16 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
             )
           : null,
       resizeToAvoidBottomInset: false,
-      body: BlocConsumer<AuthProvider, AuthState>(listener: (context, state) {
-        if (state.error != null) {
-          ToastUtil.showErrorToast(context, state.error ?? "Error");
-          return;
-        }
-        if (state.data != null) {
-          Navigator.pushNamed(context, HomeScreen.routeName);
-          return;
-        }
-      }, builder: (context, state) {
+      body: BlocBuilder<AuthProvider, AuthState>(builder: (context, state) {
         return Form(
           key: formKey,
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -128,9 +136,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   text: "Sign In",
                   function: () {
                     FocusScope.of(context).unfocus();
-                    login();
+                    if (formKey.currentState!.validate()) {
+                      login();
+                    }
                   },
-                  disabled: formKey.currentState != null && !formKey.currentState!.validate(),
+                  disabled: !(emailController.text.isValidEmail() && passController.text.isNotEmpty),
                   loading: state.loading,
                 ),
                 const YMargin(40),

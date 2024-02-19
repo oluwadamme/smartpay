@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,6 +32,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final bloc = BlocProvider.of<AuthProvider>(context);
     await bloc.getToken(emailController.text.trim());
     bloc.regRequest.email = emailController.text.trim();
+    if (bloc.state.error != null) {
+      ToastUtil.showErrorToast(context, bloc.state.error ?? "Error");
+      return;
+    }
+    if (bloc.state.data != null) {
+      //37202 27561
+      log("message");
+      Navigator.pushNamed(context, VerifyEmailScreen.routeName);
+      return;
+    }
   }
 
   @override
@@ -41,20 +53,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
         title: const CustomBackButton(),
       ),
       resizeToAvoidBottomInset: false,
-      body: BlocConsumer<AuthProvider, AuthState>(listener: (context, state) {
-        if (state.error != null) {
-          ToastUtil.showErrorToast(context, state.error ?? "Error");
-          return;
-        }
-        if (state.data != null) {
-          ToastUtil.showSuccessToast(context, "Code sent");
-          //37202
-          Navigator.pushNamed(context, VerifyEmailScreen.routeName);
-          return;
-        }
-      }, builder: (context, state) {
+      body: BlocBuilder<AuthProvider, AuthState>(builder: (context, state) {
         return Form(
           key: formKey,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: Column(
@@ -94,8 +96,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 const YMargin(30),
                 CustomButton(
-                  text: "Sign In",
-                  disabled: formKey.currentState != null && !formKey.currentState!.validate(),
+                  text: "Sign Up",
+                  disabled: !(emailController.text.isValidEmail()),
                   function: () {
                     FocusScope.of(context).unfocus();
                     if (formKey.currentState!.validate()) {

@@ -10,7 +10,7 @@ import 'package:smartpay/src/utils/text_util.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
-  static const String routeName = "/home";
+  static const String routeName = "/home_screen";
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -23,8 +23,10 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void fetchDashText() {
-    final token = BlocProvider.of<AuthProvider>(context).loginResponse!.token ?? "";
-    BlocProvider.of<DashboardProvider>(context).dashboard(token);
+    if (BlocProvider.of<AuthProvider>(context).loginResponse != null) {
+      final token = BlocProvider.of<AuthProvider>(context).loginResponse!.token ?? "";
+      BlocProvider.of<DashboardProvider>(context).dashboard(token);
+    }
   }
 
   @override
