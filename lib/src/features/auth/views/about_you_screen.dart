@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -60,6 +62,14 @@ class _AboutYouScreenState extends State<AboutYouScreen> {
       username: username.text.trim(),
     );
     await bloc.register(request);
+    if (bloc.state.error != null) {
+      ToastUtil.showErrorToast(context, bloc.state.error ?? "Error");
+      return;
+    }
+    if (bloc.state.data != null) {
+      Navigator.pushNamedAndRemoveUntil(context, CompleteReg.routeName, (route) => false);
+      return;
+    }
   }
 
   @override
@@ -71,16 +81,7 @@ class _AboutYouScreenState extends State<AboutYouScreen> {
         title: const CustomBackButton(),
       ),
       // resizeToAvoidBottomInset: false,
-      body: BlocConsumer<AuthProvider, AuthState>(listener: (context, state) {
-        if (state.error != null) {
-          ToastUtil.showErrorToast(context, state.error ?? "Error");
-          return;
-        }
-        if (state.data != null) {
-          Navigator.pushNamedAndRemoveUntil(context, CompleteReg.routeName, (route) => false);
-          return;
-        }
-      }, builder: (context, state) {
+      body: BlocBuilder<AuthProvider, AuthState>(builder: (context, state) {
         return Form(
           key: formKey,
           autovalidateMode: AutovalidateMode.onUserInteraction,

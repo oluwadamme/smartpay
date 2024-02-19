@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:smartpay/main.dart';
 import 'package:smartpay/src/utils/app_asset.dart';
 import 'package:smartpay/src/utils/app_color.dart';
 
@@ -11,7 +12,7 @@ class CustomBackButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.pop(context),
+      onTap: () => Navigator.pop(navigatorKey.currentContext ?? context),
       child: Container(
         width: 40,
         height: 40,

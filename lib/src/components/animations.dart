@@ -99,10 +99,7 @@ class ScaleRoute extends PageRouteBuilder {
               begin: 0.0,
               end: 1.0,
             ).animate(
-              CurvedAnimation(
-                parent: animation,
-                curve: Curves.easeInOut,
-              ),
+              CurvedAnimation(parent: animation, curve: Curves.easeInOut, reverseCurve: Curves.easeInOut),
             ),
             child: child,
           ),
