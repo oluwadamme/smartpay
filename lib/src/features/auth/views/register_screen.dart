@@ -8,7 +8,6 @@ import 'package:smartpay/src/components/custom_button.dart';
 import 'package:smartpay/src/components/input_field.dart';
 import 'package:smartpay/src/features/auth/data/controller/auth_controller.dart';
 import 'package:smartpay/src/features/auth/data/controller/auth_state.dart';
-import 'package:smartpay/src/features/auth/data/model/login_response.dart';
 import 'package:smartpay/src/features/auth/views/login_screen.dart';
 import 'package:smartpay/src/features/auth/views/verify_email_screen.dart';
 import 'package:smartpay/src/features/auth/views/widgets/other_auth_method.dart';
