@@ -3,6 +3,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smartpay/src/components/components.dart';
 import 'package:smartpay/src/components/custom_back_button.dart';
 import 'package:smartpay/src/components/custom_button.dart';
 import 'package:smartpay/src/components/input_field.dart';
@@ -10,12 +11,13 @@ import 'package:smartpay/src/features/auth/data/controller/auth_controller.dart'
 import 'package:smartpay/src/features/auth/data/controller/auth_state.dart';
 import 'package:smartpay/src/features/auth/data/model/login_response.dart';
 import 'package:smartpay/src/features/auth/views/home_screen.dart';
+import 'package:smartpay/src/features/forget_password/views/recover_password.dart';
 import 'package:smartpay/src/features/auth/views/register_screen.dart';
 import 'package:smartpay/src/features/auth/views/widgets/other_auth_method.dart';
 import 'package:smartpay/src/utils/app_color.dart';
 import 'package:smartpay/src/utils/extensions.dart';
 import 'package:smartpay/src/utils/spacing_util.dart';
-import 'package:smartpay/src/utils/text_util.dart';
+import 'package:smartpay/src/utils/utils.dart';
 import 'package:smartpay/src/utils/toast_util.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -73,12 +75,9 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Hi There! 👋", style: boldStyle(24, AppColors.grey900)),
+                const BoldHeader(text: "Hi There! 👋"),
                 const YMargin(10),
-                Text(
-                  "Welcome back, Sign in to your account",
-                  style: mediumStyle(16, AppColors.grey500),
-                ),
+                const LightHeader(text: "Welcome back, Sign in to your account"),
                 const YMargin(30),
                 InputField(
                   controller: emailController,
@@ -125,9 +124,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 const YMargin(30),
                 Row(
                   children: [
-                    Text(
-                      "Forgot Password?",
-                      style: boldStyle(15, AppColors.primary),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, RecoverPasswordPage.routeName);
+                      },
+                      child: Text(
+                        "Forgot Password?",
+                        style: boldStyle(15, AppColors.primary),
+                      ),
                     )
                   ],
                 ),

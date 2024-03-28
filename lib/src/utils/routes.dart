@@ -5,8 +5,11 @@ import 'package:smartpay/src/features/auth/views/about_you_screen.dart';
 import 'package:smartpay/src/features/auth/views/complete_registration.dart';
 import 'package:smartpay/src/features/auth/views/home_screen.dart';
 import 'package:smartpay/src/features/auth/views/login_screen.dart';
+import 'package:smartpay/src/features/forget_password/views/new_password.dart';
+import 'package:smartpay/src/features/forget_password/views/recover_password.dart';
 import 'package:smartpay/src/features/auth/views/register_screen.dart';
 import 'package:smartpay/src/features/auth/views/verify_email_screen.dart';
+import 'package:smartpay/src/features/forget_password/views/verify_identity.dart';
 import 'package:smartpay/src/features/onboarding/views/onboarding.dart';
 
 class AppRouter {
@@ -28,6 +31,12 @@ class AppRouter {
         return ScaleRoute(page: const HomeScreen());
       case LoginScreen.routeName:
         return SlideRightRoute(page: const LoginScreen());
+      case RecoverPasswordPage.routeName:
+        return FadeRoute(page: const RecoverPasswordPage());
+      case NewPasswordPage.routeName:
+        return SizeRoute(page: const NewPasswordPage());
+      case VerifyIdentityPage.routeName:
+        return FadeRoute(page: VerifyIdentityPage(email: settings.arguments as String));
       default:
         return FadeRoute(page: const SplashScreen());
     }

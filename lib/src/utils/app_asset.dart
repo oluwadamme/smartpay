@@ -17,4 +17,8 @@ class AppAsset {
   static const String search = "assets/svgs/search.svg";
 
   static const String thumb = "assets/images/Group 162902.png";
+
+  static const String lock = "assets/svgs/icon - illustration.svg";
+
+  static const String person = "assets/svgs/icon - illustration (1).svg";
 }
