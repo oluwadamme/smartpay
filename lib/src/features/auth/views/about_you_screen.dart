@@ -12,12 +12,11 @@ import 'package:smartpay/src/features/auth/data/controller/auth_controller.dart'
 import 'package:smartpay/src/features/auth/data/controller/auth_state.dart';
 import 'package:smartpay/src/features/auth/data/model/country.dart';
 import 'package:smartpay/src/features/auth/data/model/register_request.dart';
-import 'package:smartpay/src/features/auth/views/complete_registration.dart';
+import 'package:smartpay/src/features/auth/views/pin_page.dart';
 import 'package:smartpay/src/utils/app_asset.dart';
 import 'package:smartpay/src/utils/app_color.dart';
 import 'package:smartpay/src/utils/spacing_util.dart';
 import 'package:smartpay/src/utils/text_util.dart';
-import 'package:smartpay/src/utils/toast_util.dart';
 
 class AboutYouScreen extends StatefulWidget {
   const AboutYouScreen({super.key});
@@ -51,27 +50,6 @@ class _AboutYouScreenState extends State<AboutYouScreen> {
 
   final formKey = GlobalKey<FormState>();
 
-  void register() async {
-    final bloc = BlocProvider.of<AuthProvider>(context);
-    final request = RegisterRequest(
-      email: bloc.regRequest.email,
-      country: selectedCountry!.code,
-      deviceName: Platform.localeName,
-      fullName: nameController.text.trim(),
-      password: passController.text.trim(),
-      username: username.text.trim(),
-    );
-    await bloc.register(request);
-    if (bloc.state.error != null) {
-      ToastUtil.showErrorToast(context, bloc.state.error ?? "Error");
-      return;
-    }
-    if (bloc.state.data != null) {
-      Navigator.pushNamedAndRemoveUntil(context, CompleteReg.routeName, (route) => false);
-      return;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,7 +62,6 @@ class _AboutYouScreenState extends State<AboutYouScreen> {
       body: BlocBuilder<AuthProvider, AuthState>(builder: (context, state) {
         return Form(
           key: formKey,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(20),
             child: Column(
@@ -136,114 +113,7 @@ class _AboutYouScreenState extends State<AboutYouScreen> {
                 InkWell(
                   onTap: () {
                     FocusScope.of(context).unfocus();
-                    showModalBottomSheet(
-                      context: context,
-                      isDismissible: false,
-                      builder: (context) => ClipRRect(
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(40),
-                          topRight: Radius.circular(40),
-                        ),
-                        child: StatefulBuilder(builder: (context, setstate) {
-                          return Container(
-                            width: double.maxFinite,
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(40),
-                                topRight: Radius.circular(40),
-                              ),
-                            ),
-                            padding: const EdgeInsets.all(20),
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: InputField(
-                                        controller: searchController,
-                                        hint: "Search",
-                                        prefixIcon: SvgPicture.asset(AppAsset.search, fit: BoxFit.scaleDown),
-                                        onChanged: (p0) {},
-                                      ),
-                                    ),
-                                    const XMargin(15),
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Text(
-                                        "Cancel",
-                                        style: boldStyle(16, AppColors.grey900),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                const YMargin(20),
-                                Expanded(
-                                    child: SingleChildScrollView(
-                                  child: Column(
-                                    children: [
-                                      ...countryList.map(
-                                        (e) => Padding(
-                                          padding: const EdgeInsets.only(bottom: 10),
-                                          child: InkWell(
-                                            onTap: () {
-                                              setstate(() {
-                                                selectedCountry = e;
-                                              });
-                                              setState(() {
-                                                country.text = e.name;
-                                              });
-                                              Navigator.pop(context);
-                                            },
-                                            child: Container(
-                                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                                              decoration: BoxDecoration(
-                                                color: (selectedCountry != null && selectedCountry!.code == e.code)
-                                                    ? AppColors.grey50
-                                                    : Colors.white,
-                                                borderRadius: BorderRadius.circular(16),
-                                              ),
-                                              width: double.maxFinite,
-                                              child: Row(
-                                                children: [
-                                                  SizedBox(
-                                                    width: 32,
-                                                    height: 24,
-                                                    child: Image.asset(e.flag),
-                                                  ),
-                                                  const XMargin(10),
-                                                  Text(
-                                                    e.code,
-                                                    style: mediumStyle(16, AppColors.grey500),
-                                                  ),
-                                                  const XMargin(10),
-                                                  Text(
-                                                    e.name,
-                                                    style: boldStyle(16, AppColors.grey900),
-                                                  ),
-                                                  const Spacer(),
-                                                  if (selectedCountry != null && selectedCountry!.code == e.code)
-                                                    const Icon(
-                                                      Icons.check,
-                                                      color: AppColors.primary400,
-                                                    )
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ))
-                              ],
-                            ),
-                          );
-                        }),
-                      ),
-                    );
+                    countrySelector(context);
                   },
                   child: Material(
                     child: AbsorbPointer(
@@ -323,16 +193,137 @@ class _AboutYouScreenState extends State<AboutYouScreen> {
                   text: "Continue",
                   function: () {
                     FocusScope.of(context).unfocus();
-                    register();
+                    if (formKey.currentState!.validate()) {
+                      final request = RegisterRequest(
+                        email: BlocProvider.of<AuthProvider>(context).regRequest.email,
+                        country: selectedCountry!.code,
+                        deviceName: Platform.localeName,
+                        fullName: nameController.text.trim(),
+                        password: passController.text.trim(),
+                        username: username.text.trim(),
+                      );
+                      Navigator.pushNamed(context, PinPage.routeName, arguments: request);
+                    }
                   },
                   loading: state.loading,
-                  disabled: formKey.currentState != null && !formKey.currentState!.validate(),
+                  // disabled: formKey.currentState != null && !formKey.currentState!.validate(),
                 ),
               ],
             ),
           ),
         );
       }),
+    );
+  }
+
+  Future<dynamic> countrySelector(BuildContext context) {
+    return showModalBottomSheet(
+      context: context,
+      isDismissible: false,
+      builder: (context) => ClipRRect(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(40),
+          topRight: Radius.circular(40),
+        ),
+        child: StatefulBuilder(builder: (context, setstate) {
+          return Container(
+            width: double.maxFinite,
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(40),
+                topRight: Radius.circular(40),
+              ),
+            ),
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: InputField(
+                        controller: searchController,
+                        hint: "Search",
+                        prefixIcon: SvgPicture.asset(AppAsset.search, fit: BoxFit.scaleDown),
+                        onChanged: (p0) {},
+                      ),
+                    ),
+                    const XMargin(15),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        "Cancel",
+                        style: boldStyle(16, AppColors.grey900),
+                      ),
+                    )
+                  ],
+                ),
+                const YMargin(20),
+                Expanded(
+                    child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ...countryList.map(
+                        (e) => Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: InkWell(
+                            onTap: () {
+                              setstate(() {
+                                selectedCountry = e;
+                              });
+                              setState(() {
+                                country.text = e.name;
+                              });
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                              decoration: BoxDecoration(
+                                color: (selectedCountry != null && selectedCountry!.code == e.code)
+                                    ? AppColors.grey50
+                                    : Colors.white,
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              width: double.maxFinite,
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    width: 32,
+                                    height: 24,
+                                    child: Image.asset(e.flag),
+                                  ),
+                                  const XMargin(10),
+                                  Text(
+                                    e.code,
+                                    style: mediumStyle(16, AppColors.grey500),
+                                  ),
+                                  const XMargin(10),
+                                  Text(
+                                    e.name,
+                                    style: boldStyle(16, AppColors.grey900),
+                                  ),
+                                  const Spacer(),
+                                  if (selectedCountry != null && selectedCountry!.code == e.code)
+                                    const Icon(
+                                      Icons.check,
+                                      color: AppColors.primary400,
+                                    )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ))
+              ],
+            ),
+          );
+        }),
+      ),
     );
   }
 }

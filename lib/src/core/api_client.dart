@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:smartpay/src/core/data_exception.dart';
 import 'package:smartpay/src/core/endpoints.dart';
+import 'package:smartpay/src/core/interceptor/auth_interceptor.dart';
 
 abstract class ApiClient {
   late String accessToken;
@@ -24,14 +25,6 @@ abstract class ApiClient {
       final response = await _getDio().get(
         url,
         queryParameters: queries,
-        options: Options(
-          headers: headers ??
-              {
-                'Content-type': 'application/json',
-                "Accept": "application/json",
-                'Authorization': 'Bearer $accessToken',
-              },
-        ),
       );
       responseJson = _returnResponse(response);
     } on DioException catch (e) {
@@ -59,14 +52,6 @@ abstract class ApiClient {
     try {
       final response = await _getDio().post(
         url,
-        options: options ??
-            Options(
-              headers: {
-                'Content-type': 'application/json',
-                "Accept": "application/json",
-                'Authorization': 'Bearer $accessToken'
-              },
-            ),
         data: data,
         queryParameters: query,
       );
@@ -142,8 +127,11 @@ abstract class ApiClient {
     );
     if (kDebugMode) {
       dio.interceptors.addAll([
+        AuthInterceptor(),
         LogInterceptor(requestBody: true, responseBody: true),
       ]);
+    } else {
+      dio.interceptors.addAll([AuthInterceptor()]);
     }
     return dio;
   }

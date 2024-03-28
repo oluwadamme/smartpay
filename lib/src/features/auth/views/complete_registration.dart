@@ -7,8 +7,9 @@ import 'package:smartpay/src/utils/spacing_util.dart';
 import 'package:smartpay/src/utils/text_util.dart';
 
 class CompleteReg extends StatefulWidget {
-  const CompleteReg({super.key});
+  const CompleteReg({super.key, required this.name});
   static const String routeName = "/complete_reg";
+  final String name;
   @override
   State<CompleteReg> createState() => _CompleteRegState();
 }
@@ -27,7 +28,7 @@ class _CompleteRegState extends State<CompleteReg> {
               SizedBox(width: 140, height: 140, child: Image.asset(AppAsset.thumb)),
               const YMargin(40),
               Text(
-                "Congratulations, James",
+                "Congratulations, ${widget.name}",
                 style: boldStyle(24, AppColors.grey900, letterSpacing: -.2),
               ),
               const YMargin(20),

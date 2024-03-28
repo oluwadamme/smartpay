@@ -4,10 +4,11 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smartpay/src/components/components.dart';
+import 'package:smartpay/src/core/hive_service.dart';
 import 'package:smartpay/src/features/auth/data/controller/auth_controller.dart';
 import 'package:smartpay/src/features/auth/data/controller/auth_state.dart';
 import 'package:smartpay/src/features/auth/data/model/login_response.dart';
-import 'package:smartpay/src/features/auth/views/home_screen.dart';
+import 'package:smartpay/src/features/dashboard/views/home_screen.dart';
 import 'package:smartpay/src/features/forget_password/views/recover_password.dart';
 import 'package:smartpay/src/features/auth/views/register_screen.dart';
 import 'package:smartpay/src/features/auth/views/widgets/other_auth_method.dart';
@@ -37,7 +38,11 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
     if (bloc.state.data != null && bloc.state.data is LoginResponse) {
+      await HiveService().addBox(Constants.email, emailController.text);
+      await HiveService().addBox(Constants.password, passController.text);
+      await HiveService().addBox(Constants.token, (bloc.state.data as LoginResponse).token);
       Navigator.pushNamed(context, HomeScreen.routeName);
+
       return;
     }
   }
@@ -46,6 +51,9 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     super.initState();
     setState(() {});
+    Future.microtask(() async {
+      emailController.text = await HiveService().getBox(Constants.email);
+    });
   }
 
   @override
@@ -57,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
               leading: const SizedBox.shrink(),
               title: const CustomBackButton(),
             )
-          : null,
+          : AppBar(),
       resizeToAvoidBottomInset: false,
       body: BlocBuilder<AuthProvider, AuthState>(builder: (context, state) {
         return Form(

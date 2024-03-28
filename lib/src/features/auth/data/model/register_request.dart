@@ -15,6 +15,7 @@ class RegisterRequest {
   String? password;
   String? country;
   String? deviceName;
+  String? pin;
 
   RegisterRequest({
     this.fullName,
@@ -23,6 +24,7 @@ class RegisterRequest {
     this.password,
     this.country,
     this.deviceName,
+    this.pin,
   });
 
   factory RegisterRequest.fromJson(Map<String, dynamic> json) => RegisterRequest(
@@ -32,6 +34,7 @@ class RegisterRequest {
         password: json["password"],
         country: json["country"],
         deviceName: json["device_name"],
+        pin: json["pin"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -41,5 +44,6 @@ class RegisterRequest {
         "password": password,
         "country": country,
         "device_name": deviceName,
+        "pin": pin,
       };
 }

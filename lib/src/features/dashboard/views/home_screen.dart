@@ -1,12 +1,11 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smartpay/src/features/auth/data/controller/auth_controller.dart';
-import 'package:smartpay/src/features/auth/data/controller/auth_state.dart';
-import 'package:smartpay/src/features/auth/data/controller/dash_controller.dart';
-import 'package:smartpay/src/utils/app_color.dart';
-import 'package:smartpay/src/utils/spacing_util.dart';
-import 'package:smartpay/src/utils/text_util.dart';
+import 'package:smartpay/src/core/hive_service.dart';
+import 'package:smartpay/src/features/auth/views/login_screen.dart';
+import 'package:smartpay/src/features/dashboard/data/controllers/dash_controller.dart';
+import 'package:smartpay/src/features/dashboard/data/controllers/dash_state.dart';
+import 'package:smartpay/src/utils/utils.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -23,10 +22,14 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void fetchDashText() {
-    if (BlocProvider.of<AuthProvider>(context).loginResponse != null) {
-      final token = BlocProvider.of<AuthProvider>(context).loginResponse!.token ?? "";
-      BlocProvider.of<DashboardProvider>(context).dashboard(token);
-    }
+    BlocProvider.of<DashboardProvider>(context).dashboard();
+  }
+
+  void logout() async {
+    BlocProvider.of<DashboardProvider>(context).logout();
+
+    Navigator.pushNamedAndRemoveUntil(context, LoginScreen.routeName, (route) => false);
+    await HiveService().deleteFromDisk(Constants.token);
   }
 
   @override
@@ -40,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               const Center(child: Text("Pull to refresh the secret")),
               const YMargin(30),
-              BlocConsumer<DashboardProvider, AuthState>(
+              BlocConsumer<DashboardProvider, DashState>(
                 builder: (context, state) {
                   if (state.loading) {
                     return const Center(child: SizedBox(height: 100, width: 100, child: CircularProgressIndicator()));
@@ -51,9 +54,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   if (state.data == null) {
                     return const Center(child: SizedBox(height: 100, width: 100, child: CircularProgressIndicator()));
                   }
-                  return Center(
-                    child: SizedBox(
-                      width: screenWidth(context, percent: 0.8),
+                  return SizedBox(
+                    width: screenWidth(context, percent: 0.8),
+                    child: Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -74,6 +77,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
                 listener: (context, state) {},
               ),
+              TextButton(
+                onPressed: () {
+                  logout();
+                },
+                child: const Text("logout"),
+              )
             ],
           ),
         ),

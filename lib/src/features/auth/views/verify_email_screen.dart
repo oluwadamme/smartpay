@@ -7,6 +7,7 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:smartpay/src/components/custom_back_button.dart';
 import 'package:smartpay/src/components/custom_button.dart';
 import 'package:smartpay/src/components/input_field.dart';
+import 'package:smartpay/src/components/keypad.dart';
 import 'package:smartpay/src/features/auth/data/controller/auth_controller.dart';
 import 'package:smartpay/src/features/auth/data/controller/auth_state.dart';
 import 'package:smartpay/src/features/auth/views/about_you_screen.dart';
@@ -16,14 +17,15 @@ import 'package:smartpay/src/utils/text_util.dart';
 import 'package:smartpay/src/utils/toast_util.dart';
 
 class VerifyEmailScreen extends StatefulWidget {
-  const VerifyEmailScreen({super.key});
+  const VerifyEmailScreen({super.key, required this.token});
   static const String routeName = "/verify_email";
+  final String token;
   @override
   State<VerifyEmailScreen> createState() => _VerifyEmailScreenState();
 }
 
 class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
-  String pin = "";
+  final pin = ValueNotifier("");
   void getEmailToken() async {
     final bloc = BlocProvider.of<AuthProvider>(context);
     await bloc.getToken(bloc.regRequest.email!);
@@ -31,7 +33,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
 
   void verifyToken() async {
     final bloc = BlocProvider.of<AuthProvider>(context);
-    await bloc.validateToken(bloc.regRequest.email!, pin);
+    await bloc.validateToken(bloc.regRequest.email!, pin.value);
     if (bloc.state.error != null) {
       ToastUtil.showErrorToast(context, bloc.state.error ?? "Error");
       return;
@@ -43,6 +45,14 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
   }
 
   final controller = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    controller.text = widget.token;
+    setState(() {
+      pin.value = widget.token;
+    });
+  }
 
   final formKey = GlobalKey<FormState>();
   @override
@@ -84,7 +94,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                 obscureText: false,
                 appContext: context,
                 animationType: AnimationType.fade,
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.none,
                 pinTheme: PinTheme(
                   shape: PinCodeFieldShape.box,
                   borderRadius: BorderRadius.circular(12),
@@ -109,7 +119,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                 onCompleted: (v) {},
                 onChanged: (value) {
                   setState(() {
-                    pin = value;
+                    pin.value = value;
                   });
                 },
                 beforeTextPaste: (text) {
@@ -117,9 +127,9 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                   //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
                   //but you can show anything you want here, like your pop up saying wrong paste format or etc
                   setState(() {
-                    pin = text ?? "";
+                    pin.value = text ?? "";
                   });
-                  if (pin.length == 5) {
+                  if (pin.value.length == 5) {
                     verifyToken();
                   }
                   return true;
@@ -148,12 +158,15 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
               const YMargin(50),
               CustomButton(
                 text: "Confirm",
-                disabled: pin.length < 5,
+                disabled: pin.value.length < 5,
                 function: () {
                   verifyToken();
                 },
                 loading: state.loading,
               ),
+              const YMargin(40),
+              Keypad(pin: controller),
+              //69139
             ],
           ),
         );

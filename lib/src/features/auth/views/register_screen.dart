@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:developer';
 
 import 'package:flutter/gestures.dart';
@@ -39,7 +41,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (bloc.state.data != null) {
       //37202 27561
       log("message");
-      Navigator.pushNamed(context, VerifyEmailScreen.routeName);
+      Navigator.pushNamed(context, VerifyEmailScreen.routeName, arguments: bloc.state.data);
       return;
     }
   }
