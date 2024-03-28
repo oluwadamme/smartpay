@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smartpay/src/components/components.dart';
-import 'package:smartpay/src/features/auth/views/login_screen.dart';
 import 'package:smartpay/src/features/forget_password/views/verify_identity.dart';
 import 'package:smartpay/src/utils/utils.dart';
 

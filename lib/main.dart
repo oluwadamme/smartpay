@@ -4,7 +4,6 @@ import 'package:smartpay/src/components/splash_screen.dart';
 import 'package:smartpay/src/features/auth/data/controller/auth_controller.dart';
 import 'package:smartpay/src/features/auth/data/controller/dash_controller.dart';
 import 'package:smartpay/src/utils/routes.dart';
-import 'package:smartpay/src/utils/service_locator.dart';
 import 'package:smartpay/src/utils/theme_config.dart';
 
 void main() {
