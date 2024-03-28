@@ -21,10 +21,10 @@ dependencies:
   intl: 
   another_flushbar: ^1.12.30
   flutter_svg: ^2.0.9
-  smooth_page_indicator: ^1.1.0
-  get_it: ^7.3.0
   pin_code_fields: ^8.0.1
   animated_text_kit: 
+  hive: 
+  hive_flutter: ^1.1.0
 
   #SM
   flutter_bloc: 

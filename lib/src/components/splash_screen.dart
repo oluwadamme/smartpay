@@ -1,6 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
+import 'package:smartpay/src/core/hive_service.dart';
+import 'package:smartpay/src/features/dashboard/views/home_screen.dart';
 import 'package:smartpay/src/features/onboarding/views/onboarding.dart';
-import 'package:smartpay/src/utils/app_asset.dart';
+import 'package:smartpay/src/utils/utils.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -13,9 +17,18 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 2), () {
-      Navigator.pushReplacementNamed(context, OnboardingScreen.routeName);
+    Future.microtask(() {
+      navigate();
     });
+  }
+
+  final hive = HiveService();
+  void navigate() async {
+    if (await hive.isExists(boxName: Constants.token)) {
+      Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+    } else {
+      Navigator.pushReplacementNamed(context, OnboardingScreen.routeName);
+    }
   }
 
   @override

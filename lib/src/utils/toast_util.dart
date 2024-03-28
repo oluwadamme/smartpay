@@ -12,8 +12,7 @@ class ToastUtil {
       reverseAnimationCurve: Curves.decelerate,
       forwardAnimationCurve: Curves.elasticIn,
       backgroundColor: Colors.greenAccent,
-      boxShadows: [BoxShadow(color: Colors.blue[800]!, offset: const Offset(0.0, 2.0), blurRadius: 3.0)],
-      duration: const Duration(seconds: 2),
+      duration: const Duration(seconds: 5),
       icon: const Icon(
         Icons.check_circle,
         color: Colors.green,
