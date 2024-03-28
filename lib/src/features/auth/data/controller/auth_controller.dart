@@ -10,6 +10,7 @@ class AuthProvider extends Cubit<AuthState> {
 
   final regRequest = RegisterRequest();
   LoginResponse? loginResponse;
+
   Future<void> login(String email, String password) async {
     emit(AuthState(data: null, loading: true));
     try {

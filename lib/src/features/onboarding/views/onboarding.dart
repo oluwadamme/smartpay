@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:smartpay/src/components/custom_button.dart';
 import 'package:smartpay/src/features/auth/views/login_screen.dart';
@@ -7,7 +9,6 @@ import 'package:smartpay/src/features/onboarding/widgets/onboarding_text.dart';
 import 'package:smartpay/src/utils/app_color.dart';
 import 'package:smartpay/src/utils/spacing_util.dart';
 import 'package:smartpay/src/utils/text_util.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -47,7 +48,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     ),
                     const YMargin(70),
                     Stack(
-                      alignment: AlignmentDirectional.bottomCenter,
+                      alignment: Alignment.bottomCenter,
                       children: [
                         SizedBox(
                           height: screenHeight(context),
@@ -80,16 +81,22 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                 duration: const Duration(milliseconds: 500),
                               ),
                               const YMargin(20),
-                              SmoothPageIndicator(
-                                count: 2,
-                                controller: controller,
-                                onDotClicked: (index) => currentIndex.value = index,
-                                effect: const SlideEffect(
-                                  dotHeight: 5,
-                                  dotWidth: 20,
-                                  activeDotColor: AppColors.grey900,
-                                  dotColor: AppColors.grey200,
-                                ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  ...List.generate(
+                                    2,
+                                    (index) => AnimatedContainer(
+                                      margin: const EdgeInsets.only(right: 5),
+                                      duration: const Duration(milliseconds: 500),
+                                      width: currentIndex.value == index ? 32 : 6,
+                                      height: 6,
+                                      decoration: BoxDecoration(
+                                          color: currentIndex.value == index ? AppColors.grey900 : AppColors.grey200,
+                                          borderRadius: BorderRadius.circular(30)),
+                                    ),
+                                  )
+                                ],
                               ),
                               const YMargin(40),
                               CustomButton(
@@ -100,7 +107,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               )
                             ],
                           ),
-                        )
+                        ),
                       ],
                     )
                   ],

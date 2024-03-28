@@ -7,7 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:smartpay/src/core/data_exception.dart';
 import 'package:smartpay/src/core/endpoints.dart';
 
-class ApiClient {
+abstract class ApiClient {
   late String accessToken;
 
   bool showError = false;

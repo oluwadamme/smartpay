@@ -9,7 +9,7 @@ import 'package:smartpay/src/utils/theme_config.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  serviceLocator();
+
   runApp(const MyApp());
 }
 

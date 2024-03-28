@@ -6,7 +6,7 @@ final locator = GetIt.instance;
 
 void serviceLocator() {
   //API Service
-  locator.registerFactory<ApiClient>(ApiClient.new);
+  // locator.registerFactory<ApiClient>(ApiClient.new);
 
   //Repository
   locator.registerLazySingleton<AuthRepository>(AuthRepository.new);
